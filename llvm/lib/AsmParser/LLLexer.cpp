@@ -829,6 +829,7 @@ lltok::Kind LLLexer::LexIdentifier() {
   KEYWORD(byte);
   KEYWORD(bit);
   KEYWORD(varFlags);
+  KEYWORD(aggressive_opt);
 
 #undef KEYWORD
 

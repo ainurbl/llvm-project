@@ -290,6 +290,8 @@ def ZExt : EnumAttr<"zeroext", [ParamAttr, RetAttr]>;
 /// Function is required to make Forward Progress.
 def MustProgress : EnumAttr<"mustprogress", [FnAttr]>;
 
+def AggressiveOptimization : EnumAttr<"aggressive_opt", [FnAttr]>;
+
 /// Target-independent string attributes.
 def LessPreciseFPMAD : StrBoolAttr<"less-precise-fpmad">;
 def NoInfsFPMath : StrBoolAttr<"no-infs-fp-math">;

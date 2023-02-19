@@ -3914,3 +3914,10 @@ def Error : InheritableAttr {
   let Subjects = SubjectList<[Function], ErrorDiag>;
   let Documentation = [ErrorAttrDocs];
 }
+
+
+def AggressiveOptimization : InheritableAttr {
+  let Spellings = [GNU<"aggressive_opt">];
+  let Subjects = SubjectList<[Function]>;
+  let Documentation = [AggressiveOptimizationDocs];
+}

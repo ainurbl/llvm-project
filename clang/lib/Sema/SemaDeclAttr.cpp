@@ -6046,6 +6046,15 @@ static void handleObjCOwnershipAttr(Sema &S, Decl *D, const ParsedAttr &AL) {
       << AL.getRange() << AL << ExpectedVariable;
 }
 
+static void handleAggressiveOptimization(Sema &S, Decl *D, const ParsedAttr &Attr) {
+  if (!isFunctionOrMethod(D)) {
+    S.Diag(D->getLocation(), diag::warn_attribute_wrong_decl_type)
+        << "'AggressiveOptimization'" << ExpectedFunctionOrMethod;
+    return;
+  }
+  handleSimpleAttribute<AggressiveOptimizationAttr>(S, D, Attr);
+}
+
 static void handleObjCPreciseLifetimeAttr(Sema &S, Decl *D,
                                           const ParsedAttr &AL) {
   const auto *VD = cast<ValueDecl>(D);
@@ -8780,6 +8789,9 @@ static void ProcessDeclAttribute(Sema &S, Scope *scope, Decl *D,
 
   case ParsedAttr::AT_UsingIfExists:
     handleSimpleAttribute<UsingIfExistsAttr>(S, D, AL);
+    break;
+  case ParsedAttr::AT_AggressiveOptimization:
+    handleAggressiveOptimization(S, D, AL);
     break;
   }
 }

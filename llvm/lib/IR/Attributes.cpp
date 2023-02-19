@@ -426,6 +426,9 @@ std::string Attribute::getAsString(bool InAttrGrp) const {
         .str();
   }
 
+  if (hasAttribute(Attribute::AggressiveOptimization))
+    return "aggressive_opt";
+
   // Convert target-dependent attributes to strings of the form:
   //
   //   "kind"

@@ -6263,3 +6263,12 @@ pointing to precise locations of the call site in the source.
   }
   }];
 }
+
+def AggressiveOptimizationDocs : Documentation {
+  let Category = DocCatFunction;
+  let Heading = "Your Heading";
+  let Content = [{
+  Clang supports the GNU style ``__attribute__((yourAttribute))`` attribute on
+  functions which can invoked as blah blah.
+  }];
+}

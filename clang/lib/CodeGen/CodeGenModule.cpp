@@ -1986,6 +1986,13 @@ void CodeGenModule::SetLLVMFunctionAttributesForDefinition(const Decl *D,
       F->addTypeMetadata(0, Id);
     }
   }
+
+  // we check for yourAttribute attribute on functions
+  if (const FunctionDecl *FD = dyn_cast_or_null<FunctionDecl>(D)) {
+    if (FD->hasAttr<AggressiveOptimizationAttr>()) {
+      B.addAttribute(llvm::Attribute::AggressiveOptimization);
+    }
+  }
 }
 
 void CodeGenModule::setLLVMFunctionFEnvAttributes(const FunctionDecl *D,
