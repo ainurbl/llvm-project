@@ -6606,6 +6606,16 @@ static void handleAVRSignalAttr(Sema &S, Decl *D, const ParsedAttr &AL) {
   handleSimpleAttribute<AVRSignalAttr>(S, D, AL);
 }
 
+// must be on a function, otherwise any is ok
+static void handleYourAttributeAttr(Sema &S, Decl *D, const ParsedAttr &Attr) {
+  if (!isFunctionOrMethod(D)) {
+    S.Diag(D->getLocation(), diag::warn_attribute_wrong_decl_type)
+        << "'yourAttribute'" << ExpectedFunctionOrMethod;
+    return;
+  }
+  handleSimpleAttribute<YourAttributeAttr>(S, D, Attr);
+}
+
 static void handleBPFPreserveAIRecord(Sema &S, RecordDecl *RD) {
   // Add preserve_access_index attribute to all fields and inner records.
   for (auto D : RD->decls()) {
@@ -7671,6 +7681,9 @@ static void ProcessDeclAttribute(Sema &S, Scope *scope, Decl *D,
   case ParsedAttr::AT_Mips16:
     handleSimpleAttributeWithExclusions<Mips16Attr, MicroMipsAttr,
                                         MipsInterruptAttr>(S, D, AL);
+    break;
+  case ParsedAttr::AT_YourAttribute:
+    handleYourAttributeAttr(S, D, AL);
     break;
   case ParsedAttr::AT_MicroMips:
     handleSimpleAttributeWithExclusions<MicroMipsAttr, Mips16Attr>(S, D, AL);

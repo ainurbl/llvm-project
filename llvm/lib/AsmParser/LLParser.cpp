@@ -1339,6 +1339,7 @@ bool LLParser::parseFnAttributeValuePairs(AttrBuilder &B,
     case lltok::kw_alwaysinline: B.addAttribute(Attribute::AlwaysInline); break;
     case lltok::kw_argmemonly: B.addAttribute(Attribute::ArgMemOnly); break;
     case lltok::kw_builtin: B.addAttribute(Attribute::Builtin); break;
+    case lltok::kw_yourAttribute: B.addAttribute(Attribute::YourAttribute); break;
     case lltok::kw_cold: B.addAttribute(Attribute::Cold); break;
     case lltok::kw_hot: B.addAttribute(Attribute::Hot); break;
     case lltok::kw_convergent: B.addAttribute(Attribute::Convergent); break;

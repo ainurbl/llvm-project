@@ -459,6 +459,8 @@ std::string Attribute::getAsString(bool InAttrGrp) const {
     return "noundef";
   if (hasAttribute(Attribute::MustProgress))
     return "mustprogress";
+  if (hasAttribute(Attribute::YourAttribute))
+    return "yourAttribute";
 
   const bool IsByVal = hasAttribute(Attribute::ByVal);
   if (IsByVal || hasAttribute(Attribute::StructRet)) {

@@ -3684,3 +3684,10 @@ def EnforceTCBLeaf : InheritableAttr {
   let Documentation = [EnforceTCBLeafDocs];
   bit InheritEvenIfAlreadyPresent = 1;
 }
+
+// mark functions which can be called as a PRSC
+def YourAttribute : InheritableAttr {
+  let Spellings = [GNU<"yourAttribute">];
+  let Subjects = SubjectList<[Function]>;
+  let Documentation = [YourAttributeDocs];
+}
