@@ -20,12 +20,20 @@ public:
   bool runOnMachineFunction(MachineFunction &MF) override;
 
   StringRef getPassName() const override { return X86_MACHINEINSTR_PRINTER_PASS_NAME; }
+private:
+  bool isPrintable(MachineFunction &MF);
 };
 
 char X86MachineInstrPrinter::ID = 0;
 
-bool X86MachineInstrPrinter::runOnMachineFunction(MachineFunction &MF) {
+bool X86MachineInstrPrinter::isPrintable(MachineFunction &MF) {
+  return MF.getFunction().getFnAttribute(Attribute::AttrKind::YourAttribute).isValid();
+}
 
+bool X86MachineInstrPrinter::runOnMachineFunction(MachineFunction &MF) {
+  if (!isPrintable(MF)) {
+    return false;
+  }
   for (auto &MBB : MF) {
     outs() << "Contents of MachineBasicBlock:\n";
     outs() << MBB << "\n";
