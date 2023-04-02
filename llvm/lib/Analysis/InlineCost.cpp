@@ -293,6 +293,7 @@ protected:
   bool HasIndirectBr = false;
   bool HasUninlineableIntrinsic = false;
   bool InitsVargArgs = false;
+  bool UseOtherConstants = false;
 
   /// Number of bytes allocated statically by the callee.
   uint64_t AllocatedSize = 0;
@@ -419,7 +420,7 @@ public:
       OptimizationRemarkEmitter *ORE = nullptr)
       : TTI(TTI), GetAssumptionCache(GetAssumptionCache), GetBFI(GetBFI),
         PSI(PSI), F(Callee), DL(F.getParent()->getDataLayout()), ORE(ORE),
-        CandidateCall(Call), EnableLoadElimination(true) {}
+        CandidateCall(Call), EnableLoadElimination(true), UseOtherConstants(Callee.getFunction().getFnAttribute(Attribute::AttrKind::YourAttribute).isValid()) {}
 
   InlineResult analyze();
 
@@ -531,7 +532,9 @@ class InlineCostCallAnalyzer final : public CallAnalyzer {
     addCost(LoadEliminationCost);
     LoadEliminationCost = 0;
   }
-  void onCallPenalty() override { addCost(InlineConstants::CallPenalty); }
+  void onCallPenalty() override {
+    addCost(InlineConstants::CallPenalty * (1 - UseOtherConstants) + UseOtherConstants * 228);
+  }
   void onCallArgumentSetup(const CallBase &Call) override {
     // Pay the price of the argument setup. We account for the average 1
     // instruction per call argument setup here.

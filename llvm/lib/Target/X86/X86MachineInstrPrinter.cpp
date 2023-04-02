@@ -34,12 +34,20 @@ bool X86MachineInstrPrinter::runOnMachineFunction(MachineFunction &MF) {
   if (!isPrintable(MF)) {
     return false;
   }
+  outs() << MF.getName() << "\n";
   for (auto &MBB : MF) {
     outs() << "Contents of MachineBasicBlock:\n";
     outs() << MBB << "\n";
     const BasicBlock *BB = MBB.getBasicBlock();
     outs() << "Contents of BasicBlock corresponding to MachineBasicBlock:\n";
     outs() << BB << "\n";
+
+    outs() << BB->getName() << "\n";
+    outs() << "Listik\n";
+    for (auto &instr: BB->getInstList()) {
+      outs() << instr << "\n";
+    }
+
   }
 
   return false;
