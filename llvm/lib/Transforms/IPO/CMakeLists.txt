@@ -23,6 +23,7 @@ add_llvm_component_library(LLVMipo
   IROutliner.cpp
   InferFunctionAttrs.cpp
   InlineSimple.cpp
+  MyInliner.cpp
   Inliner.cpp
   Internalize.cpp
   LoopExtractor.cpp
