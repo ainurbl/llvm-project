@@ -33,7 +33,7 @@ class MyInliner : public LegacyInlinerBase {
 public:
   static char ID;
   MyInliner() : LegacyInlinerBase(ID), Cost(MyInlinerCost), Threshold(MyInlinerThreshold) {
-    errs() << "CALLED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" << Cost << " " << Threshold << "\n";
+    LLVM_DEBUG(dbgs() << "CALLED!\n" << Cost << " " << Threshold << "\n");
   }
 
   bool runOnSCC(CallGraphSCC &SCC) override {
@@ -48,7 +48,7 @@ public:
     if (!Callee || Callee->isDeclaration() || !Callee->hasFnAttribute(Attribute::AttrKind::YourAttribute)) {
       return InlineCost::getNever("Not suitable");
     }
-    errs() << "Yes! Got in!" << " " << Cost << " " << Threshold << "\n";
+    LLVM_DEBUG(dbgs() << "Yes! Got in!" << " " << Cost << " " << Threshold << "\n");
     return InlineCost::get(Cost, Threshold);
   }
 private:
