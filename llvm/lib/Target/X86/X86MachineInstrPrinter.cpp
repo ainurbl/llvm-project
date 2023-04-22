@@ -6,6 +6,7 @@
 using namespace llvm;
 
 #define X86_MACHINEINSTR_PRINTER_PASS_NAME "Dummy X86 machineinstr printer pass"
+#define DEBUG_TYPE "X86MachineInstrPrinter"
 
 namespace {
 
@@ -34,20 +35,21 @@ bool X86MachineInstrPrinter::runOnMachineFunction(MachineFunction &MF) {
   if (!isPrintable(MF)) {
     return false;
   }
-  outs() << MF.getName() << "\n";
+  LLVM_DEBUG(dbgs() << MF.getName() << "\n");
   for (auto &MBB : MF) {
-    outs() << "Contents of MachineBasicBlock:\n";
-    outs() << MBB << "\n";
+    LLVM_DEBUG(dbgs() << "Contents of MachineBasicBlock:\n");
+    LLVM_DEBUG(dbgs() << MBB << "\n");
     const BasicBlock *BB = MBB.getBasicBlock();
-    outs() << "Contents of BasicBlock corresponding to MachineBasicBlock:\n";
-    outs() << BB << "\n";
+    LLVM_DEBUG(dbgs() << "Contents of BasicBlock corresponding to MachineBasicBlock:\n");
+    LLVM_DEBUG(dbgs() << BB << "\n");
 
-    outs() << BB->getName() << "\n";
-    outs() << "Listik\n";
+    LLVM_DEBUG(dbgs() << BB->getName() << "\n");
+
+    LLVM_DEBUG(dbgs() << "[\n");
     for (auto &instr: BB->getInstList()) {
-      outs() << instr << "\n";
+      LLVM_DEBUG(dbgs() << instr << "\n");
     }
-
+    LLVM_DEBUG(dbgs() << "]\n");
   }
 
   return false;
