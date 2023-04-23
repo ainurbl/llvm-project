@@ -1,0 +1,1 @@
+python3.8 run_compile_commands.py  --compile_command_path=./compile_commands.1.json
