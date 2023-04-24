@@ -12,10 +12,9 @@ def main():
         commands = json.load(f)
 
     for command in commands:
-        arguments = command['arguments']
         os.chdir(command['directory'])
-        print(f"Running {' '.join(arguments)}")
-        subprocess.run(arguments)
+        print(f"Running {command['command']}")
+        subprocess.run(command['command'].split())
 
 if __name__ == '__main__':
     main()

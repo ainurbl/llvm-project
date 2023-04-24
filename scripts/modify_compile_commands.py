@@ -3,6 +3,10 @@ import json
 import os
 from pathlib import Path
 
+def check_file_for_substring(file_path, substring):
+    with open(file_path, 'r') as file:
+        file_contents = file.read()
+    return substring in file_contents
 
 def transform_compile_commands_file(input_file_path, output_file_path):
     with open(input_file_path, 'r') as f:
@@ -10,7 +14,9 @@ def transform_compile_commands_file(input_file_path, output_file_path):
 
     transformed_commands = []
     for command in compile_commands:
-        original_command = command['arguments'].copy()
+        args = command['command'].split()
+
+        original_command = args.copy()
         original_command.remove('-c')
 
         output_file_name = original_command[original_command.index('-o')+1]
@@ -18,14 +24,14 @@ def transform_compile_commands_file(input_file_path, output_file_path):
         clangpp_output = output_file_name.replace('.o', '.ll')
 
         clangpp_command = original_command[:original_command.index('-o')]
-        clangpp_command.append('-S')
         clangpp_command.append('-emit-llvm')
+        clangpp_command.append('-c')
         clangpp_command.append('-o')
         clangpp_command.append(clangpp_output)
         clangpp_command.extend(original_command[original_command.index('-o')+2:])
 
         transformed_commands.append({
-            'arguments': clangpp_command,
+            'command': ' '.join(clangpp_command),
             'directory': command['directory'],
             'file': command['file']
         })
@@ -39,7 +45,7 @@ def transform_compile_commands_file(input_file_path, output_file_path):
         opt_command.append('--inliner_inline_lines_upper_bound={}'.format(500000))
 
         transformed_commands.append({
-            'arguments': opt_command,
+            'command': ' '.join(opt_command),
             'directory': os.path.dirname(os.path.abspath(__file__)),
             'file': command['file']
         })
@@ -53,16 +59,16 @@ def transform_compile_commands_file(input_file_path, output_file_path):
         llc_command.append('{}'.format(llc_output))
 
         transformed_commands.append({
-            'arguments': llc_command,
+            'command': ' '.join(llc_command),
             'directory': os.path.dirname(os.path.abspath(__file__)),
             'file': command['file']
         })
 
-        final_command = command['arguments']
+        final_command = args
         final_command[-1] = '{}'.format(llc_output)
 
         transformed_commands.append({
-            'arguments': final_command,
+            'command': ' '.join(final_command),
             'directory': command['directory'],
             'file': command['file']
         })

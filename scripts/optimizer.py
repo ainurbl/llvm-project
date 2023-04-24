@@ -30,15 +30,12 @@ bounds = [(script_args.inliner_cost_left_bound, script_args.inliner_cost_right_b
            (script_args.inliner_threshold_left_bound, script_args.inliner_threshold_right_bound)] 
 
 def get_file_length(file_path):
-    with open(file_path, "r") as f:
-        contents = f.read()
-        length = len(contents)
-        return length
+    return os.path.getsize(file_path)
 
 def optimize(args):
     inliner_cost = int(args[0])
     inliner_threshold = int(args[1])
-    cmd = "{} -S {} -my-inliner -my-inliner-cost={} -my-inliner-threshold={} {} -o {}/robin_hood.opt2.{}.{}.ll".format(script_args.inliner_opt_path, script_args.inliner_arguments, inliner_cost, inliner_threshold, script_args.inliner_input_ll_file, script_args.inliner_tmp_folder_name, inliner_cost, inliner_threshold)
+    cmd = "{} {} -my-inliner -my-inliner-cost={} -my-inliner-threshold={} {} -o {}/robin_hood.opt2.{}.{}.ll".format(script_args.inliner_opt_path, script_args.inliner_arguments, inliner_cost, inliner_threshold, script_args.inliner_input_ll_file, script_args.inliner_tmp_folder_name, inliner_cost, inliner_threshold)
     subprocess.check_output(cmd, shell=True)
     file_length = get_file_length("{}/robin_hood.opt2.{}.{}.ll".format(script_args.inliner_tmp_folder_name, inliner_cost, inliner_threshold))
     if file_length - baseline_length > script_args.inliner_inline_lines_upper_bound:
@@ -60,7 +57,7 @@ def clean_tmp_folder(file_name):
                 shutil.copy(Path(script_args.inliner_tmp_folder_name) / name, script_args.inliner_output_ll_file)
 
 def opt_default():
-    cmd = "{} -S {} {} -o {}/robin_hood.opt1.ll".format(script_args.inliner_opt_path, script_args.inliner_arguments, script_args.inliner_input_ll_file, script_args.inliner_tmp_folder_name)
+    cmd = "{} {} {} -o {}/robin_hood.opt1.ll".format(script_args.inliner_opt_path, script_args.inliner_arguments, script_args.inliner_input_ll_file, script_args.inliner_tmp_folder_name)
     subprocess.check_output(cmd, shell=True)
 
 

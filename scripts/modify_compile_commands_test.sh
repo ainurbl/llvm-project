@@ -1,1 +1,1 @@
-python3.8 modify_compile_commands.py --build_input=./robin-hood-hashing-master/compile_commands.json --build_output=compile_commands.1.json
+python3.8 modify_compile_commands.py --build_input=/home/intersection/Documents/MCS/Diploma/llvm-project/build/play/robin-hood-hashing-master/compile_commands.json --build_output=compile_commands.1.json
