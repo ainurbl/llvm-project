@@ -6606,14 +6606,13 @@ static void handleAVRSignalAttr(Sema &S, Decl *D, const ParsedAttr &AL) {
   handleSimpleAttribute<AVRSignalAttr>(S, D, AL);
 }
 
-// must be on a function, otherwise any is ok
-static void handleYourAttributeAttr(Sema &S, Decl *D, const ParsedAttr &Attr) {
+static void handleAggressiveInlineAttr(Sema &S, Decl *D, const ParsedAttr &Attr) {
   if (!isFunctionOrMethod(D)) {
     S.Diag(D->getLocation(), diag::warn_attribute_wrong_decl_type)
-        << "'yourAttribute'" << ExpectedFunctionOrMethod;
+        << "'aggressiveInline'" << ExpectedFunctionOrMethod;
     return;
   }
-  handleSimpleAttribute<YourAttributeAttr>(S, D, Attr);
+  handleSimpleAttribute<AggressiveInlineAttr>(S, D, Attr);
 }
 
 static void handleBPFPreserveAIRecord(Sema &S, RecordDecl *RD) {
@@ -7682,8 +7681,8 @@ static void ProcessDeclAttribute(Sema &S, Scope *scope, Decl *D,
     handleSimpleAttributeWithExclusions<Mips16Attr, MicroMipsAttr,
                                         MipsInterruptAttr>(S, D, AL);
     break;
-  case ParsedAttr::AT_YourAttribute:
-    handleYourAttributeAttr(S, D, AL);
+  case ParsedAttr::AT_AggressiveInline:
+    handleAggressiveInlineAttr(S, D, AL);
     break;
   case ParsedAttr::AT_MicroMips:
     handleSimpleAttributeWithExclusions<MicroMipsAttr, Mips16Attr>(S, D, AL);

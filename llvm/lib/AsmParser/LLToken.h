@@ -451,7 +451,7 @@ enum Kind {
   kw_byte,
   kw_bit,
   kw_varFlags,
-  kw_yourAttribute,
+  kw_aggressiveInline,
 
   // Unsigned Valued tokens (UIntVal).
   LabelID,    // 42:

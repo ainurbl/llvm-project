@@ -45,7 +45,7 @@ public:
 
   InlineCost getInlineCost(CallBase &CB) override {
     Function *Callee = CB.getCalledFunction();
-    if (!Callee || Callee->isDeclaration() || !Callee->hasFnAttribute(Attribute::AttrKind::YourAttribute)) {
+    if (!Callee || Callee->isDeclaration() || !Callee->hasFnAttribute(Attribute::AttrKind::AggressiveInline)) {
       return InlineCost::getNever("Not suitable");
     }
     LLVM_DEBUG(dbgs() << "Yes! Got in!" << " " << Cost << " " << Threshold << "\n");

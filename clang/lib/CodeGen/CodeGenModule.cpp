@@ -1667,10 +1667,9 @@ void CodeGenModule::SetLLVMFunctionAttributesForDefinition(const Decl *D,
   if (CodeGenOpts.StackClashProtector)
     B.addAttribute("probe-stack", "inline-asm");
 
-  // we check for yourAttribute attribute on functions
   if (const FunctionDecl *FD = dyn_cast_or_null<FunctionDecl>(D)) {
-    if (FD->hasAttr<YourAttributeAttr>()) {
-      B.addAttribute(llvm::Attribute::YourAttribute);
+    if (FD->hasAttr<AggressiveInlineAttr>()) {
+      B.addAttribute(llvm::Attribute::AggressiveInline);
     }
   }
 

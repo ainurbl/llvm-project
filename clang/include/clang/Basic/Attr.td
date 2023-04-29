@@ -3686,8 +3686,8 @@ def EnforceTCBLeaf : InheritableAttr {
 }
 
 // mark functions which can be called as a PRSC
-def YourAttribute : InheritableAttr {
-  let Spellings = [GNU<"yourAttribute">];
+def AggressiveInline : InheritableAttr {
+  let Spellings = [GNU<"aggressiveInline">];
   let Subjects = SubjectList<[Function]>;
-  let Documentation = [YourAttributeDocs];
+  let Documentation = [AggressiveInlineDocs];
 }

@@ -5762,11 +5762,10 @@ def EnforceTCBLeafDocs : Documentation {
   }];
 }
 
-def YourAttributeDocs : Documentation {
+def AggressiveInlineDocs : Documentation {
   let Category = DocCatFunction;
-  let Heading = "Your Heading";
+  let Heading = "Aggressive inliner";
   let Content = [{
-  Clang supports the GNU style ``__attribute__((yourAttribute))`` attribute on
-  functions which can invoked as blah blah.
+  Clang supports the GNU style ``__attribute__((aggressiveInline))``
   }];
 }

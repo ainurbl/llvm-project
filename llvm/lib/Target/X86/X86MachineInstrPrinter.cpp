@@ -28,7 +28,7 @@ private:
 char X86MachineInstrPrinter::ID = 0;
 
 bool X86MachineInstrPrinter::isPrintable(MachineFunction &MF) {
-  return MF.getFunction().getFnAttribute(Attribute::AttrKind::YourAttribute).isValid();
+  return MF.getFunction().getFnAttribute(Attribute::AttrKind::AggressiveInline).isValid();
 }
 
 bool X86MachineInstrPrinter::runOnMachineFunction(MachineFunction &MF) {

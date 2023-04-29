@@ -554,7 +554,7 @@ lltok::Kind LLLexer::LexIdentifier() {
   KEYWORD(acq_rel);
   KEYWORD(seq_cst);
   KEYWORD(syncscope);
-  KEYWORD(yourAttribute);
+  KEYWORD(aggressiveInline);
 
   KEYWORD(nnan);
   KEYWORD(ninf);

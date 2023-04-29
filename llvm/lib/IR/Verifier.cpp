@@ -1650,7 +1650,7 @@ static bool isFuncOnlyAttr(Attribute::AttrKind Kind) {
   case Attribute::NullPointerIsValid:
   case Attribute::MustProgress:
   case Attribute::NoProfile:
-  case Attribute::YourAttribute:
+  case Attribute::AggressiveInline:
     return true;
   default:
     break;
