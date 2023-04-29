@@ -16,19 +16,16 @@ def transform_compile_commands_file(input_file_path, output_file_path):
     for command in compile_commands:
         args = command['command'].split()
 
-        original_command = args.copy()
-        original_command.remove('-c')
 
-        output_file_name = original_command[original_command.index('-o')+1]
+        output_file_name = args[args.index('-o')+1]
 
         clangpp_output = output_file_name.replace('.o', '.ll')
 
-        clangpp_command = original_command[:original_command.index('-o')]
+        clangpp_command = args[:args.index('-o')]
         clangpp_command.append('-emit-llvm')
-        clangpp_command.append('-c')
         clangpp_command.append('-o')
         clangpp_command.append(clangpp_output)
-        clangpp_command.extend(original_command[original_command.index('-o')+2:])
+        clangpp_command.extend(args[args.index('-o')+2:])
 
         transformed_commands.append({
             'command': ' '.join(clangpp_command),
@@ -38,11 +35,18 @@ def transform_compile_commands_file(input_file_path, output_file_path):
 
         opt_output = Path(command['directory']) / (clangpp_output + '.out')
 
+        all_args = args.copy()
+        all_args = all_args[1:-1]
+        all_args = all_args[:all_args.index('-o')] + all_args[all_args.index('-o') + 2:]
+
         opt_command = ['python3.8']
         opt_command.append('optimizer.py')
-        opt_command.append('--inliner_input_ll_file={}'.format(Path(command['directory']) / clangpp_output))
-        opt_command.append('--inliner_output_ll_file={}'.format(opt_output))
+        opt_command.append('--inliner_input_file={}'.format(Path(command['directory']) / clangpp_output))
+        opt_command.append('--inliner_output_file={}'.format(opt_output))
         opt_command.append('--inliner_inline_lines_upper_bound={}'.format(500000))
+        opt_command.append('--inliner_cores_to_use={}'.format(16))
+        # opt_command.append('--inliner_arguments={}'.format(",".join(all_args)))
+        opt_command.append('--inliner_arguments={}'.format("-O2"))
 
         transformed_commands.append({
             'command': ' '.join(opt_command),
@@ -52,7 +56,7 @@ def transform_compile_commands_file(input_file_path, output_file_path):
 
         llc_output = Path(command['directory']) / (clangpp_output + '.s')
 
-        llc_command = [original_command[0].replace('/clang++', '/llc')]
+        llc_command = [args[0].replace('/clang++', '/llc')]
         llc_command.append('{}'.format(opt_output))
         llc_command.append('-filetype=asm')
         llc_command.append('-o')
