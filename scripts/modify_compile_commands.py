@@ -77,11 +77,12 @@ def transform_compile_commands_file(input_file_path, output_file_path):
     with open(output_file_path, 'w') as f:
         json.dump(transformed_commands, f, indent=4)
 
-parser = argparse.ArgumentParser(description='Build with optimizer')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Build with optimizer')
 
-parser.add_argument('--build_input', type=str, required=True, help='изначальный compile_commands.json')
-parser.add_argument('--build_output', type=str, required=True, help='файл модифицированного compile_commands.json')
+    parser.add_argument('--build_input', type=str, required=True, help='изначальный compile_commands.json')
+    parser.add_argument('--build_output', type=str, required=True, help='файл модифицированного compile_commands.json')
 
-script_args = parser.parse_args()
+    script_args = parser.parse_args()
 
-transform_compile_commands_file(script_args.build_input, script_args.build_output)
+    transform_compile_commands_file(script_args.build_input, script_args.build_output)

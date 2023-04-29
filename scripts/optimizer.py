@@ -20,6 +20,7 @@ parser.add_argument('--inliner_cost_left_bound', type=int, default=0, help='ле
 parser.add_argument('--inliner_cost_right_bound', type=int, default=100, help='правая граница перебора inliner_cost')
 parser.add_argument('--inliner_threshold_left_bound', type=int, default=0, help='левая граница перебора inliner_threshold')
 parser.add_argument('--inliner_threshold_right_bound', type=int, default=500, help='правая граница перебора inliner_threshold')
+parser.add_argument('--inliner_codes_to_use', type=int, default=8, help='количество ядер для использования оптимизатором')
 parser.add_argument('--inliner_tmp_folder_name', type=str, default='.optimizer', help='название подпапки в текущей директории, в которую складывается служебная информация')
 
 
@@ -60,16 +61,16 @@ def opt_default():
     cmd = "{} {} {} -o {}/robin_hood.opt1.ll".format(script_args.inliner_opt_path, script_args.inliner_arguments, script_args.inliner_input_ll_file, script_args.inliner_tmp_folder_name)
     subprocess.check_output(cmd, shell=True)
 
+if __name__ == "__main__":
+    create_tmp_folder()
+    opt_default()
+    baseline_length = get_file_length("{}/robin_hood.opt1.ll".format(script_args.inliner_tmp_folder_name))
+    print("Baseline length: {}".format(baseline_length))
 
-create_tmp_folder()
-opt_default()
-baseline_length = get_file_length("{}/robin_hood.opt1.ll".format(script_args.inliner_tmp_folder_name))
-print("Baseline length: {}".format(baseline_length))
+    result = differential_evolution(optimize, bounds, tol=100, workers=script_args.inliner_codes_to_use, updating='deferred')
+    best_inliner_cost, best_inliner_threshold = result.x.astype(int)
+    best_file_name = "robin_hood.opt2.{}.{}.ll".format(best_inliner_cost, best_inliner_threshold)
 
-result = differential_evolution(optimize, bounds, tol=100)
-best_inliner_cost, best_inliner_threshold = result.x.astype(int)
-best_file_name = "robin_hood.opt2.{}.{}.ll".format(best_inliner_cost, best_inliner_threshold)
+    print("Maximum length: {}".format(-result.fun))
 
-print("Maximum length: {}".format(-result.fun))
-
-clean_tmp_folder(best_file_name)
+    clean_tmp_folder(best_file_name)
