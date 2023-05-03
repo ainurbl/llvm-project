@@ -43,9 +43,8 @@ def transform_compile_commands_file(input_file_path, output_file_path):
         opt_command.append('optimizer.py')
         opt_command.append('--inliner_input_file={}'.format(Path(command['directory']) / clangpp_output))
         opt_command.append('--inliner_output_file={}'.format(opt_output))
-        opt_command.append('--inliner_inline_lines_upper_bound={}'.format(500000))
+        opt_command.append('--inliner_inline_lines_upper_bound={}'.format(50000000))
         opt_command.append('--inliner_cores_to_use={}'.format(16))
-        # opt_command.append('--inliner_arguments={}'.format(",".join(all_args)))
         opt_command.append('--inliner_arguments={}'.format("-O2"))
 
         transformed_commands.append({
