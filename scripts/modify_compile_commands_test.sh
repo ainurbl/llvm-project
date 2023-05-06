@@ -1,1 +1,0 @@
-python3.8 modify_compile_commands.py --build_input=/home/intersection/Documents/MCS/Diploma/RedBlackTree/compile_commands.json --build_output=/home/intersection/Documents/MCS/Diploma/RedBlackTree/compile_commands_cmake.opt.json

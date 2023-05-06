@@ -1,1 +1,0 @@
-python3.8 run_compile_commands.py  --compile_command_path=/home/intersection/Documents/MCS/Diploma/RedBlackTree/compile_commands_cmake.opt.json

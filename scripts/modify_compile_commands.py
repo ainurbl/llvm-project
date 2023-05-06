@@ -8,7 +8,7 @@ def check_file_for_substring(file_path, substring):
         file_contents = file.read()
     return substring in file_contents
 
-def transform_compile_commands_file(input_file_path, output_file_path):
+def transform_compile_commands_file(input_file_path, output_file_path, opt_flag):
     with open(input_file_path, 'r') as f:
         compile_commands = json.load(f)
 
@@ -16,12 +16,12 @@ def transform_compile_commands_file(input_file_path, output_file_path):
     for command in compile_commands:
         args = command['command'].split()
 
-
         output_file_name = args[args.index('-o')+1]
 
         clangpp_output = output_file_name.replace('.o', '.ll')
 
         clangpp_command = args[:args.index('-o')]
+        clangpp_command.append(opt_flag)
         clangpp_command.append('-emit-llvm')
         clangpp_command.append('-o')
         clangpp_command.append(clangpp_output)
@@ -43,9 +43,9 @@ def transform_compile_commands_file(input_file_path, output_file_path):
         opt_command.append('optimizer.py')
         opt_command.append('--inliner_input_file={}'.format(Path(command['directory']) / clangpp_output))
         opt_command.append('--inliner_output_file={}'.format(opt_output))
-        opt_command.append('--inliner_inline_lines_upper_bound={}'.format(50000000))
+        opt_command.append('--inliner_inline_lines_upper_bound={}'.format(500000000))
         opt_command.append('--inliner_cores_to_use={}'.format(16))
-        opt_command.append('--inliner_arguments={}'.format("-O2"))
+        opt_command.append('--inliner_arguments={}'.format(opt_flag))
 
         transformed_commands.append({
             'command': ' '.join(opt_command),
@@ -57,7 +57,7 @@ def transform_compile_commands_file(input_file_path, output_file_path):
 
         llc_command = [args[0].replace('/clang++', '/llc')]
         llc_command.append('{}'.format(opt_output))
-        llc_command.append('-filetype=asm')
+        llc_command.append(opt_flag)
         llc_command.append('-o')
         llc_command.append('{}'.format(llc_output))
 
@@ -67,8 +67,7 @@ def transform_compile_commands_file(input_file_path, output_file_path):
             'file': command['file']
         })
 
-        final_command = args
-        final_command[-1] = '{}'.format(llc_output)
+        final_command = ['as', str(llc_output), '-o', output_file_name]
 
         transformed_commands.append({
             'command': ' '.join(final_command),
@@ -85,7 +84,8 @@ if __name__ == "__main__":
 
     parser.add_argument('--build_input', type=str, required=True, help='изначальный compile_commands.json')
     parser.add_argument('--build_output', type=str, required=True, help='файл модифицированного compile_commands.json')
+    parser.add_argument('--build_opt_flag', type=str, default="", help='O?')
 
     script_args = parser.parse_args()
 
-    transform_compile_commands_file(script_args.build_input, script_args.build_output)
+    transform_compile_commands_file(script_args.build_input, script_args.build_output, script_args.build_opt_flag)
