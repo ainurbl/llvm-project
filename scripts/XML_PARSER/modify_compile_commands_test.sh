@@ -1,1 +1,1 @@
-python3.8 ../modify_compile_commands.py --build_input=/home/intersection/Documents/MCS/Diploma/tinyxml2/compile_commands.json --build_output=/home/intersection/Documents/MCS/Diploma/tinyxml2/compile_commands_cmake.opt.json --build_opt_flag=
+python3.8 ../modify_compile_commands.py --build_input=/home/intersection/Documents/MCS/Diploma/tinyxml2/compile_commands.json --build_output=/home/intersection/Documents/MCS/Diploma/tinyxml2/compile_commands_cmake.opt.json --build_opt_flag=-O2
