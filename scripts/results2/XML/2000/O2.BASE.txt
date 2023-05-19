@@ -1,0 +1,11 @@
+Total time taken: 1445042861.000000 seconds
+Average time taken: 722521.430500 seconds
+Variance: 77084119.9601498246192932
+Standard deviation: 8779.7562585842788394
+10th percentile: 712417.400000 seconds
+25th percentile: 716373.750000 seconds
+50th percentile: 721445.500000 seconds
+75th percentile: 727423.250000 seconds
+90th percentile: 733499.900000 seconds
+95th percentile: 738585.750000 seconds
+99th percentile: 748901.460000 seconds
